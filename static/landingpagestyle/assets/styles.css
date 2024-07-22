@@ -1,0 +1,397 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  padding: 10px;
+  background-color: #e2e2e2;
+}
+
+.wrapper {
+  height: 100vh;
+  min-height: 100%;
+  padding: 0.5rem;
+  display: flex;
+  gap: 8rem;
+}
+
+aside {
+  font-family: Poppins, sans-serif;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+button,
+a {
+  all: unset;
+  font: inherit;
+  cursor: pointer;
+}
+
+nav {
+  position: relative;
+  width: 5rem;
+  height: calc(100vh - 0.75rem);
+  background-color: #fff;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  transition: width 500ms ease;
+  box-shadow: #cfcfcf 5px 5px 10px;
+  border: none;
+  border-radius: 1rem;
+}
+aside.active nav {
+  width: 19rem;
+}
+
+.sidebar-header,
+.sidebar-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  margin-bottom: 1.5rem;
+}
+
+.logo-wrapper {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+}
+.logo-wrapper > img {
+  width: 3rem;
+  height: 3rem;
+  background-color: transparent;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+}
+
+.sidebar-links {
+  flex-direction: column;
+  margin-bottom: auto;
+  gap: 0.6rem;
+  padding-top: 1.5rem;
+}
+nav > .sidebar-links {
+  border-top: 2px solid rgb(211, 211, 211);
+}
+
+aside.active .sidebar-links,
+aside.active .sidebar-header,
+/* The `body` selector in the CSS is used to target the `<body>` element in the HTML document. In this
+particular CSS code snippet, the `body` selector is used in conjunction with the `.active` class to
+apply styles to elements within the body when the body has the `active` class. */
+aside.active .user-profile {
+  justify-content: start;
+  align-items: stretch;
+}
+
+.link {
+  display: flex;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  gap: 1.5rem;
+}
+.hidden {
+  display: none;
+}
+aside.active .hidden {
+  display: inline;
+}
+
+.link:hover,
+.link.active:hover {
+  background-color: rgb(216 180 254);
+}
+.link.active {
+  background-color: rgb(216 180 254);
+}
+
+.link > img {
+  width: 24px;
+  height: 24px;
+}
+
+.sidebar-bottom .sidebar-links {
+  padding-bottom: 1.5rem;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  right: -50px;
+  padding: 0.5rem;
+  background-color: #fff;
+  box-shadow: #cfcfcf 5px 5px 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+aside.active .toggle-btn {
+  transform: rotate(180deg);
+}
+
+.user-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid rgb(211, 211, 211);
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+}
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.user-avatar:hover {
+  scale: 1.1;
+}
+
+.user-details {
+  align-self: center;
+  overflow: hidden;
+}
+.user-details .username {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.user-details .user-email {
+  font-size: 0.8rem;
+}
+
+/* chat */
+
+.chat-container {
+  width: 80%;
+  flex-shrink: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2.25rem;
+  background-color: rgb(255 255 255);
+  border-radius: 0.75rem;
+  margin: 2rem;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.chat-top {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  z-index: 10;
+}
+
+.chat-top h1 {
+  font-size: 1.5rem /* 24px */;
+  line-height: 2rem /* 32px */;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: 500;
+  text-decoration-line: underline;
+  text-decoration-style: double;
+  text-decoration-color: #c084fc;
+}
+
+.chat .overflow_overflow__DpoyU {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  overflow-x: hidden;
+}
+.overflow_overflow__DpoyU {
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 40px;
+}
+.prompt_prompt__nlKF0 {
+  display: grid;
+  margin-top: 0;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  unicode-bidi: isolate;
+}
+
+.pageContent_pageContent__gysc3 ::-webkit-scrollbar {
+  width: 0;
+}
+::-webkit-scrollbar {
+  background-color: #0000;
+  height: 3px;
+  width: 2px;
+}
+::-webkit-scrollbar {
+  height: 0 !important;
+  width: 0 !important;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(216 180 254);
+  border-radius: 20px;
+  position: relative;
+  z-index: 4;
+}
+
+.greeting {
+  background-color: rgb(182, 113, 255);
+  border-radius: 25px 25px 25px 5px;
+  -webkit-border-radius: 25px 25px 25px 5px;
+  -moz-border-radius: 25px 25px 25px 5px;
+  -ms-border-radius: 25px 25px 25px 5px;
+  -o-border-radius: 25px 25px 25px 5px;
+  margin: 0;
+  max-width: 520px;
+  padding: 15px 25px;
+}
+.greeting_greeting__VSW9c {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 30px;
+}
+.prompt_promptTopContainer__J4oWR {
+  display: flex;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+.prompt_promptBase__0fZlW {
+  background-color: rgb(182, 113, 255);
+  border-left: 1px solid rgb(182, 113, 255);
+  border-right: 1px solid rgb(182, 113, 255);
+  border-top: 1px solid rgb(182, 113, 255);
+  border-top-left-radius: 25%;
+  border-top-right-radius: 25%;
+  bottom: 100%;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 500;
+  grid-column: 2 / -1;
+  justify-content: space-between;
+  margin-right: 30px;
+  right: 0;
+  z-index: 5;
+  align-items: center;
+  display: flex;
+  padding: 5px 15px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.prompt_filesAndInputWrapper__c-7zw {
+  background: rgb(235, 228, 244);
+  border: 1px solid #fff;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -ms-border-radius: 15px;
+  -o-border-radius: 15px;
+  box-shadow: 0 10px 30px 0 #fff;
+  position: relative;
+}
+
+.prompt_input__8CDmU {
+  align-items: center;
+  display: flex;
+  font-size: inherit;
+  gap: 15px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 15px;
+  position: relative;
+}
+.prompt_input__attach__d4nB6 {
+  cursor: pointer;
+  display: block;
+  position: relative;
+}
+
+.icon {
+  position: relative;
+  z-index: 1;
+  min-height: 24px;
+  min-width: 24px;
+}
+.icon_icon__k79rR {
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  min-height: 20px;
+  min-width: 20px;
+  transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+}
+
+.prompt_input_textArea {
+  max-height: 313px;
+  resize: none;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font-family: Red Hat Display, sans-serif;
+  font-size: inherit;
+  outline: none;
+}
+/* Add this to your styles.css */
+
+/* Make chat container scrollable */
+.chat-container {
+  max-height: 80vh; /* Adjust height as needed */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse; /* Ensures new messages appear at the bottom */
+}
+
+/* Style for chat bubbles */
+.chat-bubble {
+  padding: 10px;
+  margin: 5px 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.user-message {
+  background-color: #0084ff;
+  color: white;
+  align-self: flex-end;
+}
+
+.bot-message {
+  background-color: #e4e6eb;
+  color: black;
+  align-self: flex-start;
+}

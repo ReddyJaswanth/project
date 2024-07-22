@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Judy Chat</title>
+    <link rel="stylesheet" href="{% static 'landingpagestyle/assets/styles.css' %}" />
+    <style>
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+        overflow: hidden;
+      }
+      .chat-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+      }
+      .chat-messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 10px;
+        background-color: #f0f0f0;
+      }
+      .chat-bubble {
+        max-width: 70%;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        word-wrap: break-word;
+      }
+      .user-message {
+        background-color: #e6e6e6;
+        align-self: flex-end;
+        text-align: right;
+      }
+      .bot-message {
+        background-color: #e6e6fa;
+        align-self: flex-start;
+        text-align: left;
+      }
+      .prompt-container {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #fff;
+        border-top: 1px solid #ccc;
+      }
+      .prompt-input-textarea {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: none;
+      }
+      .prompt-submit-button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        border: none;
+        background-color: #6200ee;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .left-container {
+        background-color: rgba(255, 255, 255, 0.8); 
+        overflow-y: auto; 
+        max-height: 80vh; 
+        padding: 10px;
+        border-radius: 10px; 
+    }
+    
+    .delete-button {
+        background-color: #ff4d4d; 
+        color: #fff; 
+        border: none; 
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer; 
+        transition: background-color 0.3s, transform 0.3s; 
+    }
+    
+    .delete-button:hover {
+        background-color: #ff0000; 
+        transform: scale(1.1); 
+    }
+    
+    @media (max-width: 768px) {
+        .sidebar-header, .sidebar-links, .sidebar-bottom, .left-container {
+            padding: 10px;
+        }
+        .logo-wrapper img {
+            max-width: 100px; 
+        }
+        .left-container {
+            max-height: 50vh; 
+        }
+        .sidebar-links .link img {
+            max-width: 20px; 
+        }
+        .sidebar-bottom .user-avatar img {
+            max-width: 40px; 
+        }
+        .sidebar-header h2, .sidebar-links .link span, .sidebar-bottom .user-details p {
+            display: none; 
+        }
+    }
+    /* Styling the container */
+.prompt-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+/* Styling the form */
+#chatForm {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Styling the textarea */
+.prompt-input-textarea {
+    width: 90%;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    resize: none;
+    background-color: #eee6f5;
+    color: #666;
+    box-sizing: border-box;
+    outline: none;
+    margin-right: 10px;
+}
+
+/* Styling the submit button */
+.prompt-submit-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #6a0dad;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.prompt-submit-button:hover {
+    background-color: #4a0072;
+}
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <aside id="aside">
+            <nav>
+                <div class="sidebar-header">
+                    <a class="logo-wrapper">
+                        <img src="{% static 'landingpagestyle/assets/logo_ai.svg' %}" alt="Logo" />
+                        <h2 class="hidden">Judy AI</h2>
+                    </a>
+                    <button class="toggle-btn" id="toggle-btn">
+                        <img src="{% static 'landingpagestyle/assets/dock_to_right.svg' %}" alt="expand button" />
+                    </button>
+                </div>
+        
+                <div class="sidebar-links">
+                    <a class="link" href="{% url 'userchat' %}">
+                        <img src="{% static 'landingpagestyle/assets/home_ai.svg' %}" alt="home icon" />
+                        <span class="hidden">Home</span>
+                    </a>
+                </div>
+
+            <div class="sidebar-links">
+                <div class="left-container">
+                    <h2>Previous Chats</h2>
+                    <ul class="list-group">
+                        {% for session in sessions %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="{% url 'userchat_action_with_session' session.id %}" class="flex-grow-1" style="color: #333;">
+                                    Chat Session {{ session.id }}
+                                </a>
+                                <form action="{% url 'delete_chat_session' session.id %}" method="post" class="ml-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm delete-button">Delete</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        
+                <div class="sidebar-bottom">
+                    <div class="sidebar-links">
+                        <a class="link">
+                            <img src="{% static 'landingpagestyle/assets/settings_ai.svg' %}" alt="sidebar settings icon" />
+                            <span class="hidden">Settings</span>
+                        </a>
+                    </div>
+        
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <img src="{% static 'landingpagestyle/assets/profile_circle.svg' %}" alt="profile icon" />
+                        </div>
+                        <div class="user-details hidden">
+                            <p class="username">{{ username }}</p>
+                            <p class="user-email">{{ email }}</p>
+                        </div>
+                    </div>
+                    <br>
+                    <hr>
+                    <a href="{% url 'user_logout' %}" class="link">
+                        <span class="hidden">Logout</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+     
+        
+        
+        <section class="chat-container">
+            <div class="chat-top">
+                <h1><span>Judy Chat</span></h1>
+                <div>
+                    <button>
+                        <div>
+                            <img src="{% static 'landingpagestyle/assets/settings_ai.svg' %}" alt="chat settings icon" class="w-8 h-8" />
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="chat-messages">
+                {% if chats %}
+                    {% for chat in chats %}
+                        <div class="chat-bubble user-message">{{ chat.user_input }}</div>
+                        <div class="chat-bubble bot-message">{{ chat.result|safe }}</div>
+                    {% endfor %}
+                {% else %}
+                    <div class="greeting_greeting__VSW9c greeting">
+                        <h2>Hello, {{ username }} 👋</h2>
+                        <p>Please select a question from the "Prompts" library below or write your own question.</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="prompt-container">
+                <form id="chatForm" action="{% if session_id %}{% url 'userchat_action_with_session' session_id %}{% else %}{% url 'userchat_action' %}{% endif %}" method="post">
+                    {% csrf_token %}
+                    <textarea class="prompt-input-textarea" name="user_input" maxlength="1800" placeholder="Type your message here" required></textarea>
+                    <button type="submit" class="prompt-submit-button">Send</button>
+                </form>
+            </div>          
+                        
+            <script>
+                document.querySelector('.prompt-input-textarea').addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        document.getElementById('chatForm').submit();
+                    }
+                });
+            </script>
+        </section>
+    </div>
+    <script type="text/javascript" src="{% static 'landingpagestyle/assets/script.js' %}"></script>
+</body>
+</html>

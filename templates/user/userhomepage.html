@@ -1,0 +1,59 @@
+{% extends 'user/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+            <div class="card text-center mb-3">
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.first_name }} {{ user.last_name }}</h2>
+                    <p class="card-text text-muted">{{ user.email }}</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Username: {{ user.username }}</li>
+                        <li class="list-group-item">First Name: {{ user.first_name }}</li>
+                        <li class="list-group-item">Last Name: {{ user.last_name }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card text-center mb-3">
+                <div class="card-body">
+                    <h2 class="card-title">Update Profile</h2>
+                    <form method="POST" action="{% url 'updateprofile' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter new username">
+                        </div>
+                        <div class="form-group">
+                            
+                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter new first name">
+                        </div>
+                        <div class="form-group">
+                            
+                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter new last name">
+                        </div>
+                        <div class="form-group">
+                            
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter new email">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock %}

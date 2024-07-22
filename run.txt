@@ -1,0 +1,7 @@
+conda activate ai
+
+cd C:\Users\HP\OneDrive\Desktop\chat-app\project[1]\project
+
+python manage.py runserver
+
+ctrl+c to stop the server

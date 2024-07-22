@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login & Registration Form | JudyAI</title>
+    <link rel="stylesheet" href="{% static 'loginpagestyle/styles.css' %}" />
+    <!-- Unicons -->
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <!-- <header class="header">
+        <nav class="nav">
+            <a href="#" class="nav_logo">JudyAI</a>
+            <ul class="nav_items">
+                <li class="nav_item">
+                    <a href="#" class="nav_link">Home</a>
+                    <a href="#" class="nav_link">Product</a>
+                    <a href="#" class="nav_link">Services</a>
+                    <a href="#" class="nav_link">Contact</a>
+                </li>
+            </ul>
+            <button class="button">Login</button>
+        </nav>
+    </header> -->
+
+    
+
+    <!-- Home -->
+    <section class="home">
+      <div class="form_container">
+        <i class="uil uil-times form_close"></i>
+        <!-- Login Form -->
+        <div class="form login_form" id="login_form">
+          <form action="{% url 'loginaction' %}" method="post">
+            {% csrf_token %}
+            <h2>Login</h2>
+            <div class="input_box">
+              <input type="text" name="username" placeholder="Enter your Username" required />
+              <i class="uil uil-envelope-alt email"></i>
+            </div>
+            <div class="input_box">
+              <input type="password" name="password" placeholder="Enter your password" />
+              <i class="uil uil-lock password"></i>
+              <i class="uil uil-eye-slash pw_hide"></i>
+            </div>
+            <div class="option_field">
+              <span class="checkbox">
+                <input type="checkbox" id="check" />
+                <label for="check">Remember me</label>
+              </span>
+              <a href="#" class="forgot_pw">Forgot password?</a>
+            </div>
+            <button class="button">Login Now</button>
+
+            <div class="login_signup">
+              Don't have an account?
+              <a href="#" id="signup">SignUp</a>
+            </div>
+          </form>
+        </div>
+        {% if messages %}
+      <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+    {% endif %}
+        <!-- SignUp Form -->
+        <div class="form signup_form" id="signup_form">
+          <form action="{% url 'registeraction' %}" method="post">
+            {% csrf_token %}
+            <h2>SignUp</h2>
+            <div class="input_box">
+              <input type="text" name="username" placeholder="Enter your username" required />
+              <i class="uil uil-envelope-alt email"></i>
+            </div>
+            <div class="input_box">
+              <input type="text" name="first_name" placeholder="Enter your First name" required />
+              <i class="uil uil-envelope-alt email"></i>
+            </div>
+            <div class="input_box">
+              <input type="text" name="last_name" placeholder="Enter your Last name" required />
+              <i class="uil uil-envelope-alt email"></i>
+            </div>
+            <div class="input_box">
+              <input type="email" name="email" placeholder="Enter your email" required />
+              <i class="uil uil-envelope-alt email"></i>
+            </div>
+            <div class="input_box">
+              <input type="password" name="password" placeholder="Create password" />
+              <i class="uil uil-lock password"></i>
+              <i class="uil uil-eye-slash pw_hide"></i>
+            </div>
+            <div class="option_field">
+              <span class="checkbox">
+                <input type="checkbox" id="check" />
+                <label for="check">Remember me</label>
+              </span>
+              <a href="#" class="forgot_pw">Forgot password?</a>
+            </div>
+            <button class="button">Register Now</button>
+
+            <div class="login_signup">
+              Already have an account?
+              <a href="#" id="login">Login</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script type="text/javascript" src="{% static 'loginpagestyle/script.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Previous Chats</title>
+    <link rel="stylesheet" href="{% static 'landingpagestyle/assets/styles.css' %}" />
+</head>
+<body>
+    <div class="wrapper">
+        <aside id="aside">
+            <nav>
+                <div class="sidebar-header">
+                    <a class="logo-wrapper">
+                        <img src="{% static 'landingpagestyle/assets/logo_ai.svg' %}" alt="Logo" />
+                        <h2 class="hidden">Judy AI</h2>
+                    </a>
+                    <button class="toggle-btn" id="toggle-btn">
+                        <img src="{% static 'landingpagestyle/assets/dock_to_right.svg' %}" alt="expand button" />
+                    </button>
+                </div>
+
+                <div class="sidebar-links">
+                    <a class="link" href="{% url 'userchat' %}">
+                        <img src="{% static 'landingpagestyle/assets/home_ai.svg' %}" alt="home icon" />
+                        <span class="hidden">Home</span>
+                    </a>
+                </div>
+
+                <div class="sidebar-bottom">
+                    <div class="sidebar-links">
+                        <a class="link">
+                            <img src="{% static 'landingpagestyle/assets/settings_ai.svg' %}" alt="sidebar settings icon" />
+                            <span class="hidden">Settings</span>
+                        </a>
+                    </div>
+
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <img src="{% static 'landingpagestyle/assets/profile_circle.svg' %}" alt="profile icon" />
+                        </div>
+                        <div class="user-details hidden">
+                            <p class="username">{{ username }}</p>
+                            <p class="user-email">{{ email }}</p>
+                        </div>
+                    </div>
+                    <br>
+                    <hr>
+                    <a href="{% url 'user_logout' %}" class="link">
+                        <span class="hidden">Logout</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <section class="chat-container">
+            <div class="chat-top">
+                <h1><span>Previous Chats</span></h1>
+            </div>
+            <div class="chat-messages">
+                {% for session in sessions %}
+                    <a href="{% url 'chat_details' session.id %}" class="previous-chat-link">
+                        <div class="chat-session">
+                            <h2>Session on {{ session.created_at }}</h2>  <!-- Using 'created_at' field -->
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const previousChatsLinks = document.querySelectorAll(".previous-chat-link");
+            previousChatsLinks.forEach(link => {
+                link.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    const sessionId = this.href.split('/').pop(); // Extract session ID from URL
+                    fetch(`/chat_details/${sessionId}/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const chatMessagesContainer = document.querySelector(".chat-messages");
+                            chatMessagesContainer.innerHTML = ""; // Clear previous messages
+                            data.chats.forEach(chat => {
+                                const userMessageDiv = document.createElement("div");
+                                userMessageDiv.classList.add("chat-bubble", "user-message");
+                                userMessageDiv.textContent = chat.user_input;
+                                
+                                const botMessageDiv = document.createElement("div");
+                                botMessageDiv.classList.add("chat-bubble", "bot-message");
+                                botMessageDiv.innerHTML = chat.result; // assuming result is safe HTML
+                                
+                                chatMessagesContainer.appendChild(userMessageDiv);
+                                chatMessagesContainer.appendChild(botMessageDiv);
+                            });
+                        });
+                });
+            });
+        });
+             
+    </script>
+    <script type="text/javascript" src="{% static 'landingpagestyle/assets/script.js' %}"></script>
+</body>
+</html>
