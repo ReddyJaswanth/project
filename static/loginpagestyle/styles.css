@@ -10,43 +10,89 @@
 a {
   text-decoration: none;
 }
-.header {
-  position: fixed;
-  height: 80px;
+
+header {
+  position: relative;
+  padding: 0px;
+  z-index: 2;
+}
+header .header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 15px;
+}
+
+.header-navbar-menu-btn {
+  font-size: 30px;
+  padding: 5px;
+}
+.header-navbar {
   width: 100%;
-  z-index: 100;
-  padding: 0 20px;
 }
-.nav {
-  max-width: 1100px;
-  width: 100%;
-  margin: 0 auto;
+.logo img {
+  width: 150px;
+  height: 140px;
 }
-.nav_logo {
-  font-size: 25px;
+
+.header-navbar-list {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
-.nav,
-.nav_item {
+
+.header-navbar,
+.header-nav-item {
   display: flex;
   height: 100%;
   align-items: center;
   justify-content: space-between;
+  color: slategray;
 }
-.nav_item {
-  column-gap: 25px;
+.header-navbar.active {
+  visibility: visible;
+  pointer-events: all;
+  max-height: 280px;
 }
-.nav_logo,
-.button,
-.nav_link {
+
+.header-navbar-list {
+  padding: 10px;
+}
+
+.header-nav-item:not(:last-child) {
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.2);
+}
+
+.header-nav-link {
+  font-size: 15px;
+  color: hsl(231, 61%, 22%);
+  font-weight: 600;
+  padding: 15px 10px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.header-nav-link:is(:hover, :focus) {
+  color: rgb(165, 109, 224);
+}
+.header-btn {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 13px;
+}
+
+.header-btn-primary {
+  background: rgb(182, 113, 255);
+  border-color: rgb(182, 113, 255);
   color: beige;
 }
 
-.nav_link {
-  font-weight: 600;
-}
-
-.nav_link:hover {
-  color: rgb(200, 7, 7);
+.header-btn-primary:is(:hover, :focus) {
+  background: rgb(161, 106, 219);
+  transition: 0.1s ease-in;
+  transform: scale(1.05);
 }
 
 .button {
@@ -62,15 +108,36 @@ a {
 }
 
 /* Home */
-.home {
+.registration-sign-in {
   position: relative;
-  height: 100vh;
+  height: 80vh;
   width: 100%;
-  background-image: url("../assests/bg3.jpg");
+  background-image: linear-gradient(
+    to right bottom,
+    rgba(232, 226, 237, 0.8),
+    rgba(227, 216, 240, 0.8),
+    rgba(219, 202, 236, 0.8),
+    rgba(186, 151, 223, 0.8)
+  );
   background-size: cover;
   background-position: center;
 }
 
+::-webkit-scrollbar {
+  background-color: #0000;
+  height: 3px;
+  width: 2px;
+}
+::-webkit-scrollbar {
+  height: 10px !important;
+  width: 10px !important;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(216 180 254);
+  border-radius: 20px;
+  position: relative;
+  z-index: 4;
+}
 /* Form */
 
 .form_container {
@@ -118,7 +185,7 @@ a {
   border-bottom: 2px solid #aaaaaa;
 }
 .input_box input:focus {
-  border-color: brown;
+  border-color: rgb(182, 113, 255);
 }
 .input_box i {
   position: absolute;
@@ -134,7 +201,7 @@ a {
 
 .input_box input:focus ~ i.email,
 .input_box input:focus ~ i.password {
-  color: brown;
+  color: rgb(182, 113, 255);
 }
 
 .input_box i.pw_hide {
@@ -151,14 +218,14 @@ a {
 }
 
 .form_container a {
-  color: brown;
+  color: rgb(182, 113, 255);
   font-size: 13px;
 }
 .form_container a:hover {
   text-decoration: underline;
 }
 .checkbox input {
-  accent-color: brown;
+  accent-color: rgb(182, 113, 255);
 }
 .checkbox {
   display: flex;
@@ -172,12 +239,14 @@ a {
   cursor: pointer;
 }
 .form_container .button {
-  background-color: brown;
+  background-color: rgb(161, 106, 219);
   cursor: pointer;
   width: 100%;
   padding: 10px 0;
   border-radius: 10px;
   margin-top: 25px;
+  transition: all 0.3s ease;
+  color: white;
 }
 .login_signup {
   font-size: 13px;

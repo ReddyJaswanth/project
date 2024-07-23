@@ -29,11 +29,46 @@
             <button class="button">Login</button>
         </nav>
     </header> -->
+    <header>
+      <div class="header-container">
+        <a href="{% url 'home' %}" class="logo">
+          <img
+            src="{% static 'landingpagestyle/images/judy_logo.png' %}"
+            alt="judy ai logo"
+          />
+        </a>
 
-    
+        <div class="header-navbar-wrapper">
+          <nav class="header-navbar" data-navbar>
+            <ul class="header-navbar-list">
+              <li class="header-nav-item">
+                <a href="{% url 'home' %}" class="header-nav-link">FAQ</a>
+              </li>
 
+              <li class="header-nav-item">
+                <a href="{% url 'home' %}#about" class="header-nav-link"
+                  >Features</a
+                >
+              </li>
+
+              <li class="header-nav-item">
+                <a href="{% url 'home' %}#features" class="header-nav-link"
+                  >About Us</a
+                >
+              </li>
+              <form action="{% url 'loginpage' %}" method="post">
+                {% csrf_token %}
+                <button class="header-btn header-btn-primary">
+                  Get Started
+                </button>
+              </form>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
     <!-- Home -->
-    <section class="home">
+    <section class="registration-sign-in">
       <div class="form_container">
         <i class="uil uil-times form_close"></i>
         <!-- Login Form -->
@@ -42,11 +77,20 @@
             {% csrf_token %}
             <h2>Login</h2>
             <div class="input_box">
-              <input type="text" name="username" placeholder="Enter your Username" required />
+              <input
+                type="text"
+                name="username"
+                placeholder="Enter your Username"
+                required
+              />
               <i class="uil uil-envelope-alt email"></i>
             </div>
             <div class="input_box">
-              <input type="password" name="password" placeholder="Enter your password" />
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+              />
               <i class="uil uil-lock password"></i>
               <i class="uil uil-eye-slash pw_hide"></i>
             </div>
@@ -66,35 +110,57 @@
           </form>
         </div>
         {% if messages %}
-      <div class="alert alert-danger" role="alert">
-        {% for message in messages %}
-          {{ message }}
-        {% endfor %}
-      </div>
-    {% endif %}
+        <div class="alert alert-danger" role="alert">
+          {% for message in messages %} {{ message }} {% endfor %}
+        </div>
+        {% endif %}
         <!-- SignUp Form -->
         <div class="form signup_form" id="signup_form">
           <form action="{% url 'registeraction' %}" method="post">
             {% csrf_token %}
             <h2>SignUp</h2>
             <div class="input_box">
-              <input type="text" name="username" placeholder="Enter your username" required />
+              <input
+                type="text"
+                name="username"
+                placeholder="Enter your username"
+                required
+              />
               <i class="uil uil-envelope-alt email"></i>
             </div>
             <div class="input_box">
-              <input type="text" name="first_name" placeholder="Enter your First name" required />
+              <input
+                type="text"
+                name="first_name"
+                placeholder="Enter your First name"
+                required
+              />
               <i class="uil uil-envelope-alt email"></i>
             </div>
             <div class="input_box">
-              <input type="text" name="last_name" placeholder="Enter your Last name" required />
+              <input
+                type="text"
+                name="last_name"
+                placeholder="Enter your Last name"
+                required
+              />
               <i class="uil uil-envelope-alt email"></i>
             </div>
             <div class="input_box">
-              <input type="email" name="email" placeholder="Enter your email" required />
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
               <i class="uil uil-envelope-alt email"></i>
             </div>
             <div class="input_box">
-              <input type="password" name="password" placeholder="Create password" />
+              <input
+                type="password"
+                name="password"
+                placeholder="Create password"
+              />
               <i class="uil uil-lock password"></i>
               <i class="uil uil-eye-slash pw_hide"></i>
             </div>
@@ -116,6 +182,9 @@
       </div>
     </section>
 
-    <script type="text/javascript" src="{% static 'loginpagestyle/script.js' %}"></script>
+    <script
+      type="text/javascript"
+      src="{% static 'loginpagestyle/script.js' %}"
+    ></script>
   </body>
 </html>

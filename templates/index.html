@@ -10,12 +10,19 @@
     <!-- 
     - favicon link
   -->
-    <link rel="shortcut icon" href="{% static 'landingpagestyle/favicon.svg' %}" type="image/svg+xml" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'landingpagestyle/favicon.svg' %}"
+      type="image/svg+xml"
+    />
 
     <!-- 
     - custom css link
   -->
-    <link rel="stylesheet" href="{% static 'landingpagestyle/css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'landingpagestyle/css/style.css' %}"
+    />
 
     <!-- 
     - google font link
@@ -36,11 +43,14 @@
     <header>
       <div class="container">
         <a href="{% url 'home' %}" class="logo">
-          <img src="{% static 'landingpagestyle/images/judy_logo.png' %}" alt="Funel logo" />
+          <img
+            src="{% static 'landingpagestyle/images/judy_logo.png' %}"
+            alt="judy ai logo"
+          />
         </a>
 
         <div class="navbar-wrapper">
-          <button  class="navbar-menu-btn" data-navbar-toggle-btn>
+          <button class="navbar-menu-btn" data-navbar-toggle-btn>
             <ion-icon name="menu-outline"></ion-icon>
           </button>
 
@@ -55,13 +65,14 @@
               </li>
 
               <li class="nav-item">
-                <a href="{% url 'home' %}#features" class="nav-link">About Us</a>
+                <a href="{% url 'home' %}#features" class="nav-link"
+                  >About Us</a
+                >
               </li>
               <form action="{% url 'loginpage' %}" method="post">
                 {% csrf_token %}
                 <button class="btn btn-primary">Get Started</button>
               </form>
-              
             </ul>
           </nav>
         </div>
@@ -558,7 +569,10 @@
         <div class="container">
           <div class="footer-brand">
             <a href="#" class="logo">
-              <img src="{% static 'landingpagestyle/images/judy_logo.png' %}" alt="Judy AI logo" />
+              <img
+                src="{% static 'landingpagestyle/images/judy_logo.png' %}"
+                alt="Judy AI logo"
+              />
             </a>
 
             <p class="footer-text">Follow us on</p>

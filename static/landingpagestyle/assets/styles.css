@@ -65,13 +65,12 @@ aside.active nav {
 
 .logo-wrapper {
   display: flex;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
 }
-.logo-wrapper > img {
-  width: 3rem;
-  height: 3rem;
+.judy-ai-logo {
+  width: 100%;
+  height: 4rem;
   background-color: transparent;
   padding: 0.4rem;
   border-radius: 0.5rem;
@@ -144,6 +143,24 @@ aside.active .toggle-btn {
   transform: rotate(180deg);
 }
 
+.delete-button {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.delete-button:hover {
+  background-color: #ff0000;
+  transform: scale(1.1);
+}
+.logout-svg {
+  height: 30px;
+  width: 30px;
+}
 .user-profile {
   display: flex;
   justify-content: center;

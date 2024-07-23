@@ -1,282 +1,651 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Judy Chat</title>
-    <link rel="stylesheet" href="{% static 'landingpagestyle/assets/styles.css' %}" />
+    <!-- <link
+      rel="stylesheet"
+      href="{% static 'landingpagestyle/assets/styles.css' %}"
+    /> -->
     <style>
-      .chat-container {
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        padding: 10px;
+        background-color: #e2e2e2;
+      }
+
+      .wrapper {
+        height: 100vh;
+        min-height: 100%;
+        padding: 0.5rem;
+        display: flex;
+        gap: 8rem;
+      }
+
+      aside {
+        font-family: Poppins, sans-serif;
+        position: relative;
+        top: 0;
+        left: 0;
+      }
+
+      button,
+      a {
+        all: unset;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      nav {
+        position: relative;
+        width: 5rem;
+        height: calc(100vh - 0.75rem);
+        background-color: #fff;
+        padding: 1rem 0.75rem;
         display: flex;
         flex-direction: column;
-        height: 80vh;
+        transition: width 500ms ease;
+        box-shadow: #cfcfcf 5px 5px 10px;
+        border: none;
+        border-radius: 1rem;
+      }
+      aside.active nav {
+        width: 19rem;
+      }
+
+      .sidebar-header,
+      .sidebar-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         overflow: hidden;
       }
+
+      .sidebar-header {
+        margin-bottom: 1.5rem;
+      }
+
+      .logo-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .judy-ai-logo {
+        width: 120px;
+        height: 120px;
+        background-color: transparent;
+        padding: 0.4rem;
+        border-radius: 0.5rem;
+        align-self: center;
+      }
+
+      .sidebar-links {
+        flex-direction: column;
+        margin-bottom: auto;
+        gap: 0.6rem;
+        padding-top: 1.5rem;
+      }
+      nav > .sidebar-links {
+        border-top: 2px solid rgb(211, 211, 211);
+      }
+
+      aside.active .sidebar-links,
+aside.active .sidebar-header,
+/* The `body` selector in the CSS is used to target the `<body>` element in the HTML document. In this
+particular CSS code snippet, the `body` selector is used in conjunction with the `.active` class to
+apply styles to elements within the body when the body has the `active` class. */
+aside.active .user-profile {
+        justify-content: start;
+        align-items: stretch;
+      }
+
+      .link {
+        display: flex;
+        padding: 0.6rem;
+        border-radius: 0.5rem;
+        gap: 1.5rem;
+      }
+      .hidden {
+        display: none;
+      }
+      aside.active .hidden {
+        display: inline;
+      }
+
+      .link:hover,
+      .link.active:hover {
+        background-color: rgb(216 180 254);
+      }
+      .link.active {
+        background-color: rgb(216 180 254);
+      }
+
+      .link > img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .sidebar-bottom .sidebar-links {
+        padding-bottom: 1.5rem;
+      }
+
+      .toggle-btn {
+        position: absolute;
+        top: 10px;
+        right: -50px;
+        padding: 0.5rem;
+        background-color: #fff;
+        box-shadow: #cfcfcf 5px 5px 10px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.25s ease;
+      }
+      aside.active .toggle-btn {
+        transform: rotate(180deg);
+      }
+
+      .delete-button {
+        background-color: #ff4d4d;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+
+      .delete-button:hover {
+        background-color: #ff0000;
+        transform: scale(1.1);
+      }
+      .logout-svg {
+        height: 30px;
+        width: 30px;
+      }
+      .user-profile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 2px solid rgb(211, 211, 211);
+      }
+
+      .user-avatar {
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        transition: scale 0.2s ease;
+      }
+      .user-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .user-avatar:hover {
+        scale: 1.1;
+      }
+
+      .user-details {
+        align-self: center;
+        overflow: hidden;
+      }
+      .user-details .username {
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+      .user-details .user-email {
+        font-size: 0.8rem;
+      }
+
+      /* chat */
+
+      .chat-container {
+        width: 80%;
+        flex-shrink: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 2.25rem;
+        background-color: rgb(255 255 255);
+        border-radius: 0.75rem;
+        margin: 2rem;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+      }
+
       .chat-top {
+        position: relative;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 3rem;
+        z-index: 10;
         padding: 10px;
-        background-color: #fff;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #e5e5e5;
       }
-      .chat-messages {
-        flex-grow: 1;
+
+      .chat-top h1 {
+        font-size: 1.5rem /* 24px */;
+        line-height: 2rem /* 32px */;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: 500;
+        text-decoration-line: underline;
+        text-decoration-style: double;
+        text-decoration-color: #c084fc;
+      }
+
+      .chat .overflow_overflow__DpoyU {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        overflow-x: hidden;
+      }
+      .overflow_overflow__DpoyU {
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        height: 100%;
         overflow-y: auto;
-        padding: 10px;
-        background-color: #f0f0f0;
+        padding-bottom: 40px;
       }
+      .prompt_prompt__nlKF0 {
+        display: grid;
+        margin-top: 0;
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        unicode-bidi: isolate;
+      }
+
+      .pageContent_pageContent__gysc3 ::-webkit-scrollbar {
+        width: 0;
+      }
+      ::-webkit-scrollbar {
+        background-color: #0000;
+        height: 3px;
+        width: 2px;
+      }
+      ::-webkit-scrollbar {
+        height: 0 !important;
+        width: 0 !important;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: rgb(216 180 254);
+        border-radius: 20px;
+        position: relative;
+        z-index: 4;
+      }
+
+      .greeting {
+        background-color: rgb(182, 113, 255);
+        border-radius: 25px 25px 25px 5px;
+        -webkit-border-radius: 25px 25px 25px 5px;
+        -moz-border-radius: 25px 25px 25px 5px;
+        -ms-border-radius: 25px 25px 25px 5px;
+        -o-border-radius: 25px 25px 25px 5px;
+        margin: 0;
+        max-width: 520px;
+        padding: 15px 25px;
+        color: white;
+      }
+      .greeting_greeting__VSW9c {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 30px;
+      }
+      .prompt_promptTopContainer__J4oWR {
+        display: flex;
+        justify-content: flex-end;
+        overflow: hidden;
+      }
+      .prompt_promptBase__0fZlW {
+        background-color: rgb(182, 113, 255);
+        border-left: 1px solid rgb(182, 113, 255);
+        border-right: 1px solid rgb(182, 113, 255);
+        border-top: 1px solid rgb(182, 113, 255);
+        border-top-left-radius: 25%;
+        border-top-right-radius: 25%;
+        bottom: 100%;
+        color: #ffffff;
+        cursor: pointer;
+        font-weight: 500;
+        grid-column: 2 / -1;
+        justify-content: space-between;
+        margin-right: 30px;
+        right: 0;
+        z-index: 5;
+        align-items: center;
+        display: flex;
+        padding: 5px 15px;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+      }
+
+      .prompt_filesAndInputWrapper__c-7zw {
+        background: rgb(235, 228, 244);
+        border: 1px solid #fff;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
+        box-shadow: 0 10px 30px 0 #fff;
+        position: relative;
+        padding: 15px;
+        margin-top: 10px;
+      }
+      #chatForm {
+        display: flex;
+        width: 100%;
+        align-items: center;
+      }
+      .prompt_input__8CDmU {
+        align-items: center;
+        display: flex;
+        font-size: inherit;
+        gap: 15px;
+        height: -webkit-fit-content;
+        height: -moz-fit-content;
+        height: fit-content;
+        justify-content: space-between;
+        overflow: hidden;
+        padding: 15px;
+        position: relative;
+      }
+      .prompt_input__attach__d4nB6 {
+        cursor: pointer;
+        display: block;
+        position: relative;
+      }
+
+      .icon {
+        position: relative;
+        z-index: 1;
+        min-height: 24px;
+        min-width: 24px;
+      }
+      .icon_icon__k79rR {
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-size: contain;
+        min-height: 20px;
+        min-width: 20px;
+        transition: all 0.2s ease;
+        -webkit-transition: all 0.2s ease;
+        -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+        -o-transition: all 0.2s ease;
+      }
+
+      .prompt_input_textArea {
+        max-height: 313px;
+        resize: none;
+        background-color: transparent;
+        border: none;
+        color: inherit;
+        font-family: Red Hat Display, sans-serif;
+        font-size: inherit;
+        outline: none;
+      }
+      /* Add this to your styles.css */
+
+      /* Make chat container scrollable */
+      .chat-container {
+        max-height: 100vh; /* Adjust height as needed */
+        overflow-y: auto;
+        display: flex;
+        /* flex-direction: column-reverse; Ensures new messages appear at the bottom */
+      }
+
+      /* Style for chat bubbles */
       .chat-bubble {
-        max-width: 70%;
-        margin: 10px;
         padding: 10px;
+        margin: 5px 10px;
         border-radius: 10px;
+        max-width: 70%;
         word-wrap: break-word;
       }
-      .user-message {
-        background-color: #e6e6e6;
-        align-self: flex-end;
-        text-align: right;
-      }
-      .bot-message {
-        background-color: #e6e6fa;
-        align-self: flex-start;
-        text-align: left;
-      }
-      .prompt-container {
+
+      .chat-messages {
         display: flex;
-        align-items: center;
-        padding: 10px;
-        background-color: #fff;
-        border-top: 1px solid #ccc;
+        flex-direction: column;
+        gap: 10px;
+        border: 1px solid #e4e6eb;
+        border-radius: 15px;
+        padding: 17px;
+        min-height: 50vh;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        scrollbar-color: transparent transparent;
       }
-      .prompt-input-textarea {
-        flex-grow: 1;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        resize: none;
+      .user-message {
+        background-color: rgb(216 180 254);
+        color: black;
+        align-self: flex-end;
       }
-      .prompt-submit-button {
-        margin-left: 10px;
-        padding: 10px 20px;
-        border: none;
-        background-color: #6200ee;
-        color: #fff;
-        border-radius: 5px;
-        cursor: pointer;
+
+      .bot-message {
+        background-color: #e4e6eb;
+        color: black;
+        align-self: flex-start;
       }
-      .left-container {
-        background-color: rgba(255, 255, 255, 0.8); 
-        overflow-y: auto; 
-        max-height: 80vh; 
-        padding: 10px;
-        border-radius: 10px; 
-    }
-    
-    .delete-button {
-        background-color: #ff4d4d; 
-        color: #fff; 
-        border: none; 
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer; 
-        transition: background-color 0.3s, transform 0.3s; 
-    }
-    
-    .delete-button:hover {
-        background-color: #ff0000; 
-        transform: scale(1.1); 
-    }
-    
-    @media (max-width: 768px) {
-        .sidebar-header, .sidebar-links, .sidebar-bottom, .left-container {
-            padding: 10px;
-        }
-        .logo-wrapper img {
-            max-width: 100px; 
-        }
-        .left-container {
-            max-height: 50vh; 
-        }
-        .sidebar-links .link img {
-            max-width: 20px; 
-        }
-        .sidebar-bottom .user-avatar img {
-            max-width: 40px; 
-        }
-        .sidebar-header h2, .sidebar-links .link span, .sidebar-bottom .user-details p {
-            display: none; 
-        }
-    }
-    /* Styling the container */
-.prompt-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    margin: 20px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 100%;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-}
-
-/* Styling the form */
-#chatForm {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-/* Styling the textarea */
-.prompt-input-textarea {
-    width: 90%;
-    padding: 10px;
-    border: none;
-    border-radius: 20px;
-    font-size: 16px;
-    resize: none;
-    background-color: #eee6f5;
-    color: #666;
-    box-sizing: border-box;
-    outline: none;
-    margin-right: 10px;
-}
-
-/* Styling the submit button */
-.prompt-submit-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #6a0dad;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.prompt-submit-button:hover {
-    background-color: #4a0072;
-}
-
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="wrapper">
-        <aside id="aside">
-            <nav>
-                <div class="sidebar-header">
-                    <a class="logo-wrapper">
-                        <img src="{% static 'landingpagestyle/assets/logo_ai.svg' %}" alt="Logo" />
-                        <h2 class="hidden">Judy AI</h2>
-                    </a>
-                    <button class="toggle-btn" id="toggle-btn">
-                        <img src="{% static 'landingpagestyle/assets/dock_to_right.svg' %}" alt="expand button" />
-                    </button>
-                </div>
-        
-                <div class="sidebar-links">
-                    <a class="link" href="{% url 'userchat' %}">
-                        <img src="{% static 'landingpagestyle/assets/home_ai.svg' %}" alt="home icon" />
-                        <span class="hidden">Home</span>
-                    </a>
-                </div>
+      <aside id="aside">
+        <nav>
+          <div class="sidebar-header">
+            <a class="logo-wrapper">
+              <img
+                src="{% static 'landingpagestyle/images/judy_logo.png' %}"
+                alt="Logo"
+                class="judy-ai-logo"
+              />
+            </a>
+            <button class="toggle-btn" id="toggle-btn">
+              <img
+                src="{% static 'landingpagestyle/assets/dock_to_right.svg' %}"
+                alt="expand button"
+              />
+            </button>
+          </div>
 
-            <div class="sidebar-links">
-                <div class="left-container">
-                    <h2>Previous Chats</h2>
-                    <ul class="list-group">
-                        {% for session in sessions %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="{% url 'userchat_action_with_session' session.id %}" class="flex-grow-1" style="color: #333;">
-                                    Chat Session {{ session.id }}
-                                </a>
-                                <form action="{% url 'delete_chat_session' session.id %}" method="post" class="ml-2">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm delete-button">Delete</button>
-                                </form>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        
-                <div class="sidebar-bottom">
-                    <div class="sidebar-links">
-                        <a class="link">
-                            <img src="{% static 'landingpagestyle/assets/settings_ai.svg' %}" alt="sidebar settings icon" />
-                            <span class="hidden">Settings</span>
-                        </a>
-                    </div>
-        
-                    <div class="user-profile">
-                        <div class="user-avatar">
-                            <img src="{% static 'landingpagestyle/assets/profile_circle.svg' %}" alt="profile icon" />
-                        </div>
-                        <div class="user-details hidden">
-                            <p class="username">{{ username }}</p>
-                            <p class="user-email">{{ email }}</p>
-                        </div>
-                    </div>
-                    <br>
-                    <hr>
-                    <a href="{% url 'user_logout' %}" class="link">
-                        <span class="hidden">Logout</span>
-                    </a>
-                </div>
-            </nav>
-        </aside>
-     
-        
-        
-        <section class="chat-container">
-            <div class="chat-top">
-                <h1><span>Judy Chat</span></h1>
-                <div>
-                    <button>
-                        <div>
-                            <img src="{% static 'landingpagestyle/assets/settings_ai.svg' %}" alt="chat settings icon" class="w-8 h-8" />
-                        </div>
-                    </button>
-                </div>
-            </div>
-            <div class="chat-messages">
-                {% if chats %}
-                    {% for chat in chats %}
-                        <div class="chat-bubble user-message">{{ chat.user_input }}</div>
-                        <div class="chat-bubble bot-message">{{ chat.result|safe }}</div>
-                    {% endfor %}
-                {% else %}
-                    <div class="greeting_greeting__VSW9c greeting">
-                        <h2>Hello, {{ username }} 👋</h2>
-                        <p>Please select a question from the "Prompts" library below or write your own question.</p>
-                    </div>
-                {% endif %}
-            </div>
-            
-            <div class="prompt-container">
-                <form id="chatForm" action="{% if session_id %}{% url 'userchat_action_with_session' session_id %}{% else %}{% url 'userchat_action' %}{% endif %}" method="post">
+          <div class="sidebar-links">
+            <a class="link active" href="{% url 'userchat' %}">
+              <img
+                src="{% static 'landingpagestyle/assets/home_ai.svg' %}"
+                alt="home icon"
+              />
+              <span class="hidden">Home</span>
+            </a>
+          </div>
+
+          <div class="sidebar-links">
+            <div class="left-container">
+              <button
+                class="prev-chats-dropdown-btn active"
+                style="
+                  padding: 6px 8px 6px 16px;
+                  text-decoration: none;
+                  font-size: 20px;
+                  color: black;
+                  display: block;
+                  border: none;
+                  background: none;
+                  width: 100%;
+                  text-align: left;
+                  cursor: pointer;
+                  outline: none;
+                "
+              >
+                Previous Chats <i class="fa fa-caret-down"></i>
+              </button>
+              <ul
+                class="chat-sessions-dropdown"
+                style="
+                  display: none;
+                  background-color: #262626;
+                  padding-left: 8px;
+                "
+              >
+                {% for session in sessions %}
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <a
+                    href="{% url 'userchat_action_with_session' session.id %}"
+                    class="flex-grow-1"
+                    style="color: #333"
+                  >
+                    Chat Session {{ session.id }}
+                  </a>
+                  <form
+                    action="{% url 'delete_chat_session' session.id %}"
+                    method="post"
+                    class="ml-2"
+                  >
                     {% csrf_token %}
-                    <textarea class="prompt-input-textarea" name="user_input" maxlength="1800" placeholder="Type your message here" required></textarea>
-                    <button type="submit" class="prompt-submit-button">Send</button>
-                </form>
-            </div>          
-                        
-            <script>
-                document.querySelector('.prompt-input-textarea').addEventListener('keypress', function (e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        document.getElementById('chatForm').submit();
-                    }
-                });
-            </script>
-        </section>
+                    <button
+                      type="submit"
+                      class="btn btn-danger btn-sm delete-button"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <div class="sidebar-bottom">
+            <div class="sidebar-links">
+              <a class="link">
+                <img
+                  src="{% static 'landingpagestyle/assets/settings_ai.svg' %}"
+                  alt="sidebar settings icon"
+                />
+                <span class="hidden">Settings</span>
+              </a>
+            </div>
+
+            <div class="user-profile">
+              <div class="user-avatar">
+                <img
+                  src="{% static 'landingpagestyle/assets/profile_circle.svg' %}"
+                  alt="profile icon"
+                />
+              </div>
+              <div class="user-details hidden">
+                <p class="username">{{ username }}</p>
+                <p class="user-email">{{ email }}</p>
+              </div>
+            </div>
+            <br />
+            <hr />
+            <a href="{% url 'user_logout' %}" class="link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                class="logout-svg"
+              >
+                <path
+                  d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
+                /></svg
+              ><span class="hidden">Logout</span>
+            </a>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Chat Section -->
+      <section class="chat-container">
+        <div class="chat-top">
+          <h1><span>Judy Chat</span></h1>
+          <div>
+            <button>
+              <div>
+                <img
+                  src="{% static 'landingpagestyle/assets/settings_ai.svg' %}"
+                  alt="chat settings icon"
+                  class="w-8 h-8"
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+        <div class="chat-messages">
+          <div class="greeting_greeting__VSW9c greeting">
+            <h2>Hello, {{ username }} 👋</h2>
+            <p>
+              Please ask a question related to ipc sections or any legal
+              agreements to our bot.
+            </p>
+          </div>
+          {% if chats %} {% for chat in chats %}
+          <div class="chat-bubble user-message">{{ chat.user_input }}</div>
+          <div class="chat-bubble bot-message">{{ chat.result|safe }}</div>
+          {% endfor %} {% endif %}
+        </div>
+
+        <div class="prompt_filesAndInputWrapper__c-7zw">
+          <form
+            id="chatForm"
+            action="{% if session_id %}{% url 'userchat_action_with_session' session_id %}{% else %}{% url 'userchat_action' %}{% endif %}"
+            method="post"
+          >
+            {% csrf_token %}
+            <textarea
+              class="prompt_input_textArea"
+              name="user_input"
+              maxlength="1800"
+              placeholder="Type your message here"
+              style="height: 20px; width: 100%"
+              required
+            ></textarea>
+            <button type="submit" class="prompt_input__attach__d4nB6">
+              <img
+                src="{% static 'landingpagestyle/assets/send.svg' %}"
+                alt="send"
+                class="icon_icon__k79rR icon undefined"
+              />
+            </button>
+          </form>
+        </div>
+
+        <script>
+          document
+            .querySelector(".prompt_input_textArea")
+            .addEventListener("keypress", function (e) {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById("chatForm").submit();
+              }
+            });
+        </script>
+      </section>
     </div>
-    <script type="text/javascript" src="{% static 'landingpagestyle/assets/script.js' %}"></script>
-</body>
+    <script
+      type="text/javascript"
+      src="{% static 'landingpagestyle/assets/script.js' %}"
+    ></script>
+  </body>
 </html>
