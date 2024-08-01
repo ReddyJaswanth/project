@@ -1,6 +1,6 @@
-conda activate ai
+conda activate chat-app
 
-cd C:\Users\HP\OneDrive\Desktop\chat-app\project[1]\project
+cd C:\Users\Sontene Uday Kiran\OneDrive\Desktop\JudyAI\prj\project\project
 
 python manage.py runserver
 

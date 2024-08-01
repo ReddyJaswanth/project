@@ -11,7 +11,7 @@
     /> -->
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-
+      
       *,
       *::before,
       *::after {
@@ -446,6 +446,10 @@ aside.active .user-profile {
         color: black;
         align-self: flex-start;
       }
+      .highlight {
+        background-color: rgb(234, 72, 14);
+        font-weight: bold;
+    }
     </style>
   </head>
   <body>
@@ -467,7 +471,7 @@ aside.active .user-profile {
               />
             </button>
           </div>
-
+      
           <div class="sidebar-links">
             <a class="link active" href="{% url 'userchat' %}">
               <img
@@ -477,7 +481,7 @@ aside.active .user-profile {
               <span class="hidden">Home</span>
             </a>
           </div>
-
+      
           <div class="sidebar-links">
             <div class="left-container">
               <a class="link">
@@ -553,7 +557,8 @@ aside.active .user-profile {
               </ul>
             </div>
           </div>
-
+      
+      
           <div class="sidebar-bottom">
             <div class="sidebar-links">
               <a class="link">
@@ -564,7 +569,7 @@ aside.active .user-profile {
                 <span class="hidden">Settings</span>
               </a>
             </div>
-
+      
             <div class="user-profile">
               <div class="user-avatar">
                 <img
@@ -587,97 +592,76 @@ aside.active .user-profile {
               >
                 <path
                   d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
-                /></svg
-              ><span class="hidden">Logout</span>
-            </a>
-          </div>
-        </nav>
-        <script>
-          var dropdown = document.getElementById("prev-chats-dropdown-btn");
-          var i;
-
-          for (i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener("click", function () {
-              this.classList.toggle("active");
-              var dropdownContent = document.getElementById(
-                "chat-sessions-dropdown"
-              );
-              if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
-              } else {
-                dropdownContent.style.display = "block";
-              }
-            });
-          }
-        </script>
+              /></svg
+            ><span class="hidden">Logout</span>
+          </a>
+        </div>
+      </nav>
+      
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          var dropdownBtn = document.getElementById("prev-chats-dropdown-btn");
+          var dropdownContent = document.getElementById("chat-sessions-dropdown");
+          var documentsBtn = document.getElementById("documents-dropdown-btn");
+          var documentsContent = document.getElementById("documents-dropdown");
+      
+          dropdownBtn.addEventListener("click", function () {
+            dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
+          });
+      
+          documentsBtn.addEventListener("click", function () {
+            documentsContent.style.display = documentsContent.style.display === "block" ? "none" : "block";
+          });
+        });
+      </script>
       </aside>
-
+      
       <!-- Chat Section -->
       <section class="chat-container">
         <div class="chat-top">
-          <h1><span>Judy Chat</span></h1>
-          <div>
-            <button>
-              <div>
-                <img
-                  src="{% static 'landingpagestyle/assets/settings_ai.svg' %}"
-                  alt="chat settings icon"
-                  class="w-8 h-8"
-                />
-              </div>
-            </button>
-          </div>
+            <h1><span>Judy Chat</span></h1>
+            <div>
+                <button>
+                    <div>
+                        <img src="{% static 'landingpagestyle/assets/settings_ai.svg' %}" alt="chat settings icon" class="w-8 h-8">
+                    </div>
+                </button>
+            </div>
         </div>
         <div class="chat-messages">
-          <div class="greeting_greeting__VSW9c greeting">
-            <h2>Hello, {{ username }} 👋</h2>
-            <p>
-              Please ask a question related to ipc sections or any legal
-              agreements to our bot.
-            </p>
-          </div>
-          {% if chats %} {% for chat in chats %}
-          <div class="chat-bubble user-message">{{ chat.user_input }}</div>
-          <div class="chat-bubble bot-message">{{ chat.result|safe }}</div>
-          {% endfor %} {% endif %}
+            <div class="greeting_greeting__VSW9c greeting">
+                <h2>Hello, {{ username }} 👋</h2>
+                <p>
+                    Please ask a question related to ipc sections or any legal agreements to our bot.
+                </p>
+            </div>
+            {% if chats %} 
+                {% for chat in chats %}
+                    <div class="chat-bubble user-message">{{ chat.user_input }}</div>
+                    <div class="chat-bubble bot-message">{{ chat.result|safe }}</div>
+                {% endfor %} 
+            {% endif %}
         </div>
 
         <div class="prompt_filesAndInputWrapper__c-7zw">
-          <form
-            id="chatForm"
-            action="{% if session_id %}{% url 'userchat_action_with_session' session_id %}{% else %}{% url 'userchat_action' %}{% endif %}"
-            method="post"
-          >
-            {% csrf_token %}
-            <textarea
-              class="prompt_input_textArea"
-              name="user_input"
-              maxlength="1800"
-              placeholder="Type your message here"
-              style="height: 20px; width: 100%"
-              required
-            ></textarea>
-            <button type="submit" class="prompt_input__attach__d4nB6">
-              <img
-                src="{% static 'landingpagestyle/assets/send.svg' %}"
-                alt="send"
-                class="icon_icon__k79rR icon undefined"
-              />
-            </button>
-          </form>
+            <form id="chatForm" action="{% if session_id %}{% url 'userchat_action_with_session' session_id %}{% else %}{% url 'userchat_action' %}{% endif %}" method="post">
+                {% csrf_token %}
+                <textarea class="prompt_input_textArea" name="user_input" maxlength="1800" placeholder="Type your message here" style="height: 20px; width: 100%" required></textarea>
+                <button type="submit" class="prompt_input__attach__d4nB6">
+                    <img src="{% static 'landingpagestyle/assets/send.svg' %}" alt="send" class="icon_icon__k79rR icon undefined">
+                </button>
+            </form>
         </div>
 
         <script>
-          document
-            .querySelector(".prompt_input_textArea")
-            .addEventListener("keypress", function (e) {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                document.getElementById("chatForm").submit();
-              }
+            document.querySelector(".prompt_input_textArea").addEventListener("keypress", function (e) {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    document.getElementById("chatForm").submit();
+                }
             });
         </script>
-      </section>
+    </section>
     </div>
     <script
       type="text/javascript"

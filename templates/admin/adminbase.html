@@ -13,17 +13,17 @@
 <body>
     <style>
         body {
-            background-image: url("{% static 'img/wp2533041.webp' %}");
+            background-image: url("{% static 'landingpagestyle/assets/bg3.jpg' %}");
             background-size: cover;
             background-repeat: no-repeat;
         }
     </style>
-    <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span>Judy-ai</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-6"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+    <nav class="navbar navbar-dark navbar-expand-md bg-white py-3">
+        <div class="container"><a class="navbar-brand d-flex align-items-center text-dark" href="{% url 'home' %}"><span>Judy AI</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-6"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link active" href="{% url  'adminhome' %}">Users</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{% url 'user_logout' %}">logout</a></li>
+                    <li class="nav-item"><a class="nav-link active text-dark" href="{% url  'adminhome' %}">Users</a></li>
+                    <li class="nav-item"><a class="nav-link active text-dark" href="{% url 'user_logout' %}">Logout</a></li>
                 </ul>
                 
             </div>
